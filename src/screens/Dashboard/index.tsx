@@ -1,5 +1,11 @@
 import React, { memo } from 'react'
-import { Icon } from 'src/components'
+
+import { Icon, IconNames } from 'src/components'
+
+import { useFetch } from 'src/hooks'
+
+import { asyncStorageKeyTransaction } from 'src/services/transactions'
+import { GetCategory } from 'src/types/transactions'
 
 import { Header, InfoCard, TransactionListData, Transactions } from './components'
 
@@ -7,58 +13,20 @@ import { Header, InfoCard, TransactionListData, Transactions } from './component
 import * as Styles from './styles'
 
 function BaseDashboard () {
-	const data: TransactionListData[] = [
-		{
-			id: 1,
-			amount: 'R$ 2.000,00',
-			type: 'expense',
-			category: 'Hospital',
-			color: 'text',
-			createdAt: new Date().toISOString(),
-			name: 'activity',
-			title: 'Desenvolvimento de site'
-		},
-		{
-			id: 2,
-			amount: 'R$ 2.000,00',
-			type: 'expense',
-			category: 'Hospital',
-			color: 'text',
-			createdAt: new Date().toISOString(),
-			name: 'activity',
-			title: 'Desenvolvimento de site'
-		},
-		{
-			id: 3,
-			amount: 'R$ 2.000,00',
-			type: 'income',
-			category: 'Hospital',
-			color: 'text',
-			createdAt: new Date().toISOString(),
-			name: 'activity',
-			title: 'Desenvolvimento de site'
-		},
-		{
-			id: 4,
-			amount: 'R$ 2.000,00',
-			type: 'income',
-			category: 'Hospital',
-			color: 'text',
-			createdAt: new Date().toISOString(),
-			name: 'activity',
-			title: 'Desenvolvimento de site'
-		},
-		{
-			id: 5,
-			amount: 'R$ 2.000,00',
-			type: 'expense',
-			category: 'Hospital',
-			color: 'text',
-			createdAt: new Date().toISOString(),
-			name: 'activity',
-			title: 'Desenvolvimento de site'
-		}
-	]
+	const { data } = useFetch<GetCategory>(asyncStorageKeyTransaction, {
+		isGetDataOnMount: true
+	})
+
+	const parsedData: TransactionListData[] = data.map(value => ({
+		amount: value.amount,
+		category: value.name,
+		createdAt: value.created_at,
+		id: value.id,
+		name: value.icon as IconNames,
+		type: value.type,
+		color: 'text',
+		title: value.name
+	}))
 
 	return (
 		<Styles.Container>
@@ -82,7 +50,7 @@ function BaseDashboard () {
 				/>
 			</Styles.HightLightCard>
 			<Transactions 
-				data={data}
+				data={parsedData}
 			/>
 		</Styles.Container>
 	)

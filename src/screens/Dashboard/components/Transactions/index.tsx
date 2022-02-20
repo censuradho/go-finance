@@ -23,7 +23,7 @@ function BaseTransactions ({ data }: TransactionsProps) {
 				data={data}
 				keyExtractor={item => String(item.id)}
 				renderItem={({ item }) => (
-					<Card key={new Date().getTime()} {...item}/>
+					<Card key={item.id} {...item}/>
 				)}
 
 				showsVerticalScrollIndicator={false}

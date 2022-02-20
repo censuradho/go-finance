@@ -7,6 +7,7 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'src/hooks/useTheme'
 
 type FeatherProps = Pick<ComponentProps<typeof Feather>, 'name' | 'size'>
+export type IconNames = FeatherProps['name']
 
 interface IconProps extends FeatherProps {
   color?: keyof DefaultTheme['colors']

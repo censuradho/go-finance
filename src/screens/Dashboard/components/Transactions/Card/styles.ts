@@ -16,7 +16,7 @@ export const Title = styled.Text`
 `
 
 interface AmountProps {
-  type: 'expense' | 'income'
+  type: string
 }
 
 export const Amount = styled.Text<AmountProps>`
