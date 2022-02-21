@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 
 import { Icon, IconNames } from 'src/components'
+import { categories } from 'src/data/categories'
 
 import { useFetch } from 'src/hooks'
 
@@ -19,7 +20,7 @@ function BaseDashboard () {
 
 	const parsedData: TransactionListData[] = data.map(value => ({
 		amount: value.amount,
-		category: value.name,
+		category: categories.find(category => category.key === value.category_key)?.name || '',
 		createdAt: value.created_at,
 		id: value.id,
 		name: value.icon as IconNames,

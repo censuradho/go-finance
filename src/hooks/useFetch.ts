@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback, useState } from 'react'
 
 import { getData } from 'src/services/asyncStorage'
 
@@ -26,13 +27,16 @@ export function useFetch <T>(entity: string, options?: Options) {
 		}
 	}
 
-	useEffect(() => {
-		options?.isGetDataOnMount && handleGetData()
-	}, [])
+	useFocusEffect(
+		useCallback(() => {
+			options?.isGetDataOnMount && handleGetData()
+		}, [options?.isGetDataOnMount])
+	)
 
 	return {
 		data,
 		isLoading,
+		fetch,
 		error
 	}
 }

@@ -16,6 +16,7 @@ interface TransactionsProps {
 import * as Styles from './styles'
 
 function BaseTransactions ({ data }: TransactionsProps) {
+	// console.log(data)
 	return (
 		<Styles.Container>
 			<Styles.Title>Listagem</Styles.Title>

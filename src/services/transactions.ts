@@ -14,8 +14,8 @@ export async function createTransaction (data: CreateTransaction) {
 	const dataStoragedParsed = dataStoraged ? JSON.parse(dataStoraged) : []
 
 	return AsyncStorage.setItem(entity, JSON.stringify([
+		data,
 		...dataStoragedParsed,
-		data
 	]))
 }
 
