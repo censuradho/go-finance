@@ -7,16 +7,17 @@ import { toCurrency } from 'src/utils'
 interface InfoCardProps extends Styles.CardProps {
 	icon: ReactNode;
 	amount: number;
-	description?: string
+	description?: string;
+	title: string
 }
 
 import * as Styles from './styles'
 
-function BaseInfoCard ({ variant, icon, amount, description }: InfoCardProps) {
+function BaseInfoCard ({ variant, icon, amount, description, title }: InfoCardProps) {
 	return (
 		<Styles.Container variant={variant}>
 			<Flex justifyContent="space-between" fullWidth>
-				<Styles.Title variant={variant}>Entrada</Styles.Title>
+				<Styles.Title variant={variant}>{title}</Styles.Title>
 				{icon}
 			</Flex>
 			<Styles.Amount variant={variant}>{toCurrency(amount)}</Styles.Amount>

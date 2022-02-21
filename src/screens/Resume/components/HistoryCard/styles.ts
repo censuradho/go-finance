@@ -35,5 +35,4 @@ export const Title = styled.Text`
 
 export const Amount = styled(Title)`
   color: ${({ theme }) => theme.colors.title};
-
 `

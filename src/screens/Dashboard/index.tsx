@@ -75,16 +75,19 @@ function BaseDashboard () {
 			<Header />
 			<Styles.HightLightCard>
 				<InfoCard
+					title="Entradas"
 					amount={incomeValue} 
 					icon={<Icon name="arrow-up" color="green" />} 
 					description={formatDateHeightLight(lastTransactionEntryIncome)}
 				/>
 				<InfoCard
+					title="Saidas"
 					amount={expenseValue} 
 					icon={<Icon name="arrow-down" color="red" />} 
 					description={formatDateHeightLight(lastTransactionEntryExpense)}
 				/>
 				<InfoCard
+					title="Total"
 					variant="primary"
 					amount={incomeValue - expenseValue} 
 					icon={<Icon name="dollar-sign" color="background" />} 

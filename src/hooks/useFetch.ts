@@ -40,7 +40,7 @@ export function useFetch <T>(entity: string, options: Options = baseOptions) {
 	return {
 		data,
 		isLoading,
-		fetch,
+		getData: handleGetData,
 		error
 	}
 }
