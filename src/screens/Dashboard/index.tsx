@@ -1,6 +1,7 @@
-import React, { memo, useMemo, useState } from 'react'
+import React, { memo, useMemo } from 'react'
+import { ActivityIndicator } from 'react-native'
 
-import { Icon, IconNames } from 'src/components'
+import { Icon, IconNames, Loading } from 'src/components'
 import { categories } from 'src/data/categories'
 
 import { useFetch } from 'src/hooks'
@@ -15,8 +16,7 @@ import { TYPE } from 'src/constants/transaction'
 import * as Styles from './styles'
 
 function BaseDashboard () {
-	// const [hightLightData, setHightLightData] = useState()
-	const { data } = useFetch<GetCategory>(asyncStorageKeyTransaction, {
+	const { data, isLoading } = useFetch<GetCategory>(asyncStorageKeyTransaction, {
 		isGetDataOnMount: true
 	})
 
@@ -28,7 +28,7 @@ function BaseDashboard () {
 	const income = useMemo(() => data
 		?.filter(value => value.type === TYPE.income)
 		?.map(value => value.amount)
-		?.reduce((prev, next) => prev + next, 0),[data])
+		?.reduce((prev, next) => prev + next, 0), [data])
 
 	const parsedData: TransactionListData[] = data.map(value => ({
 		amount: value.amount,
@@ -41,8 +41,11 @@ function BaseDashboard () {
 		title: value.name
 	}))
 
+			
+	
 	return (
 		<Styles.Container>
+			<Loading isLoading={isLoading} />
 			<Header />
 			<Styles.HightLightCard>
 				<InfoCard
