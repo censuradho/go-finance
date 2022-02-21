@@ -8,4 +8,4 @@ export interface CreateTransaction {
   icon: string
 }
 
-export type GetCategory = CreateTransaction
+export type GetTransaction = CreateTransaction

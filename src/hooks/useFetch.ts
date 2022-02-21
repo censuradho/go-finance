@@ -8,7 +8,11 @@ import { useBooleanToggle } from './useBooleanToggle'
 interface Options {
 	isGetDataOnMount?: boolean
 }
-export function useFetch <T>(entity: string, options?: Options) {
+
+const baseOptions: Options = {
+	isGetDataOnMount: true
+}
+export function useFetch <T>(entity: string, options: Options = baseOptions) {
 	const [data, setData] = useState<T[]>([])
 	const [error, setError] = useState<Error | null>(null)
 

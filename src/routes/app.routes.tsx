@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MaterialIcons } from '@expo/vector-icons'
 const { Navigator, Screen } = createBottomTabNavigator()
 
-import { Dashboard, Register } from 'src/screens'
+import { Dashboard, Register, Resume } from 'src/screens'
 import { routePaths } from 'src/constants/routes'
 import { useTheme } from 'src/hooks'
 import { Icon } from 'src/components'
@@ -40,11 +40,12 @@ function BaseAppRoutes () {
 			/>
 			<Screen 
 				name={routePaths.resume} 
-				component={Register} 
+				component={Resume} 
 				options={{
 					tabBarIcon: (({ color, size }) => <MaterialIcons name="pie-chart" color={color} size={size}  />)
 				}}
 			/>
+
 		</Navigator>
 	)
 }

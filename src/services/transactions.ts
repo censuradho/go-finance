@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { APP_ASYNC_STORAGE_KEY } from 'src/constants/app'
 
-import { CreateTransaction, GetCategory } from 'src/types/transactions'
+import { CreateTransaction, GetTransaction } from 'src/types/transactions'
 
 export const asyncStorageKeyTransaction = 'transaction'
 
@@ -24,7 +24,7 @@ export async function geTransaction () {
 
 	if (!data) return null
 
-	return JSON.parse(data) as GetCategory[]
+	return JSON.parse(data) as GetTransaction[]
 }
 
 

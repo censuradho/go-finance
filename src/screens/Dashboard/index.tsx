@@ -6,7 +6,7 @@ import { categories } from 'src/data/categories'
 import { useFetch } from 'src/hooks'
 
 import { asyncStorageKeyTransaction } from 'src/services/transactions'
-import { CreateTransaction, GetCategory } from 'src/types/transactions'
+import { CreateTransaction, GetTransaction } from 'src/types/transactions'
 
 import { Header, InfoCard, TransactionListData, Transactions } from './components'
 
@@ -17,7 +17,7 @@ import * as Styles from './styles'
 import { formatDate } from 'src/utils'
 
 function BaseDashboard () {
-	const { data, isLoading } = useFetch<GetCategory>(asyncStorageKeyTransaction, {
+	const { data, isLoading } = useFetch<GetTransaction>(asyncStorageKeyTransaction, {
 		isGetDataOnMount: true
 	})
 
@@ -32,9 +32,12 @@ function BaseDashboard () {
 		?.map(value => value.amount)
 		?.reduce((prev, next) => prev + next, 0), [data])
 
-	const getLastTime = (payload: CreateTransaction[]) => 
-	// eslint-disable-next-line prefer-spread
-		Math.max.apply(Math, payload.map(value => new Date(value.created_at).getTime()))
+	const getLastTime = (payload: CreateTransaction[]) =>  {
+		if (payload.length === 0) return 0
+		// eslint-disable-next-line prefer-spread
+		return Math.max.apply(Math, payload.map(value => new Date(value.created_at).getTime()))
+	}
+
 	
 	const lastTransactionEntryExpense = getLastTime(expense)
 	const lastTransactionEntryIncome = getLastTime(income)
@@ -52,12 +55,15 @@ function BaseDashboard () {
 		title: value.name
 	}))
 
-	const formatDateHeightLight = (date: number) => {
+	const formatDateHeightLight = (dateTime: number) => {
+		if (!dateTime) return 'Sem dados'
 		// eslint-disable-next-line quotes
-		return formatDate(new Date(date), "'Última entrada dia' dd 'de' MMMM")
+		return formatDate(new Date(dateTime), "'Última entrada dia' dd 'de' MMMM")
 	}
 	
 	const formatDateHeightLightTotal = (date: number) => {
+		if (!date) return 'Sem dados'
+
 		// eslint-disable-next-line quotes
 		return formatDate(new Date(date), "'De 01 à' dd 'de' MMMM")
 	}
