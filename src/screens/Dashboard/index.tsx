@@ -1,5 +1,4 @@
 import React, { memo, useMemo } from 'react'
-import { ActivityIndicator } from 'react-native'
 
 import { Icon, IconNames, Loading } from 'src/components'
 import { categories } from 'src/data/categories'
@@ -7,7 +6,7 @@ import { categories } from 'src/data/categories'
 import { useFetch } from 'src/hooks'
 
 import { asyncStorageKeyTransaction } from 'src/services/transactions'
-import { GetCategory } from 'src/types/transactions'
+import { CreateTransaction, GetCategory } from 'src/types/transactions'
 
 import { Header, InfoCard, TransactionListData, Transactions } from './components'
 
@@ -15,20 +14,32 @@ import { TYPE } from 'src/constants/transaction'
 
 import * as Styles from './styles'
 
+import { formatDate } from 'src/utils'
+
 function BaseDashboard () {
 	const { data, isLoading } = useFetch<GetCategory>(asyncStorageKeyTransaction, {
 		isGetDataOnMount: true
 	})
 
-	const expense = useMemo(() => data
-		?.filter(value => value.type === TYPE.expense)
+	const expense = useMemo(() => data.filter(value => value.type === TYPE.expense), [data])
+	const income = useMemo(() => data.filter(value => value.type === TYPE.income), [data])
+
+	const expenseValue = useMemo(() => expense
 		?.map(value => value.amount)
 		?.reduce((prev, next) => prev + next, 0), [data])
 
-	const income = useMemo(() => data
-		?.filter(value => value.type === TYPE.income)
+	const incomeValue = useMemo(() => income
 		?.map(value => value.amount)
 		?.reduce((prev, next) => prev + next, 0), [data])
+
+	const getLastTime = (payload: CreateTransaction[]) => 
+	// eslint-disable-next-line prefer-spread
+		Math.max.apply(Math, payload.map(value => new Date(value.created_at).getTime()))
+	
+	const lastTransactionEntryExpense = getLastTime(expense)
+	const lastTransactionEntryIncome = getLastTime(income)
+	const lastTransaction =  getLastTime(data)
+
 
 	const parsedData: TransactionListData[] = data.map(value => ({
 		amount: value.amount,
@@ -41,28 +52,37 @@ function BaseDashboard () {
 		title: value.name
 	}))
 
-			
+	const formatDateHeightLight = (date: number) => {
+		// eslint-disable-next-line quotes
+		return formatDate(new Date(date), "'Última entrada dia' dd 'de' MMMM")
+	}
 	
+	const formatDateHeightLightTotal = (date: number) => {
+		// eslint-disable-next-line quotes
+		return formatDate(new Date(date), "'De 01 à' dd 'de' MMMM")
+	}
+
+
 	return (
 		<Styles.Container>
-			<Loading isLoading={isLoading} />
+			<Loading isLoading={isLoading} color="title" />
 			<Header />
 			<Styles.HightLightCard>
 				<InfoCard
-					amount={income} 
+					amount={incomeValue} 
 					icon={<Icon name="arrow-up" color="green" />} 
-					description="Última entrada dia 13 de abril" 
+					description={formatDateHeightLight(lastTransactionEntryIncome)}
 				/>
 				<InfoCard
-					amount={expense} 
+					amount={expenseValue} 
 					icon={<Icon name="arrow-down" color="red" />} 
-					description="Última entrada dia 13 de abril" 
+					description={formatDateHeightLight(lastTransactionEntryExpense)}
 				/>
 				<InfoCard
 					variant="primary"
-					amount={income - expense} 
+					amount={incomeValue - expenseValue} 
 					icon={<Icon name="dollar-sign" color="background" />} 
-					description="Última entrada dia 13 de abril" 
+					description={formatDateHeightLightTotal(lastTransaction)} 
 				/>
 			</Styles.HightLightCard>
 			<Transactions 
